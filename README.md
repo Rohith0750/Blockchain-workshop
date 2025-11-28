@@ -14,6 +14,7 @@ The contract exposes a single read-only function, **`getRandomEmoji()`**, which 
 The frontend is built using **Next.js**, **TypeScript**, **wagmi**, and **viem**, offering a clean and reactive UI for users to connect their wallet and fetch data from the blockchain.
 
 ---
+![alt text](image.png)
 
 ## **Features**
 
