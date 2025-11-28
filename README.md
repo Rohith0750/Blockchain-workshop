@@ -1,119 +1,62 @@
-# 🧾 MultiWill - Digital Inheritance on Blockchain
+# Random Emoji Smart Contract UI
 
-<div align="center">
-
-![Solidity](https://img.shields.io/badge/Solidity-0.8.0+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Platform](https://img.shields.io/badge/Platform-Ethereum%20Compatible-purple.svg)
-
-</div>
-
-## 📖 Project Description
-MultiWill is a decentralized smart contract that enables users to create digital wills on the blockchain. This innovative solution allows you to securely designate crypto assets to specific recipients, ensuring your digital assets are distributed according to your wishes without relying on traditional intermediaries.
+## **Contract Address**
+`0x3CfC7176Ab2d9317c5C69CF26248348AbAe3a345`  
+https://coston2-explorer.flare.network/address/0x3CfC7176Ab2d9317c5C69CF26248348AbAe3a345
 
 ---
 
-## 🎯 What It Does
-MultiWill leverages blockchain technology to provide a transparent, immutable, and automated inheritance system for cryptocurrency assets. Users can:
+## **Description**
 
-- Create multiple wills for different recipients  
-- Specify exact amounts to be inherited  
-- Allow recipients to claim their inheritance  
-- Track the status of all wills in real-time  
+This project provides a simple, wallet-connected web interface for interacting with a deployed smart contract on the Flare Coston2 network.  
+The contract exposes a single read-only function, **`getRandomEmoji()`**, which returns a random emoji string on each call.
 
----
-
-## ✨ Features
-- 🔒 *Secure Storage* – Wills are stored immutably on the blockchain  
-- 📊 *Multiple Wills* – Create unlimited wills for different recipients  
-- 💰 *Flexible Amounts* – Assign any crypto amount per recipient  
-- 🔄 *Claim Management* – Recipients can easily claim funds  
-- 📈 *Transparency* – All transactions are publicly verifiable  
-- 🛡 *No Intermediaries* – No third-party executors required  
-- 📱 *Easy Access* – Simple contract functions  
+The frontend is built using **Next.js**, **TypeScript**, **wagmi**, and **viem**, offering a clean and reactive UI for users to connect their wallet and fetch data from the blockchain.
 
 ---
 
-## 🚀 How It Works
-1. *Create a Will* – Call createWill() with recipient address and send crypto.  
-2. *Will Storage* – Contract stores recipient, amount, and claim status.  
-3. *Claiming* – Recipients use claimWill() to withdraw funds.  
-4. *Tracking* – View status using read-only functions.
+## **Features**
+
+### 🔗 **Wallet Connection**
+- Seamless integration with wagmi for connecting any supported Web3 wallet.
+- UI elements auto-update based on wallet connection state.
+
+### 😀 **Random Emoji Fetching**
+- Calls the smart contract's `getRandomEmoji()` method.
+- Displays the emoji in a styled UI card.
+- Includes a refresh button to fetch a new emoji.
+
+### ⚡ **Live Contract Interaction**
+- Uses wagmi’s `useReadContract()` hook for real-time updates.
+- Handles wallet gating, loading states, and error conditions.
+
+### 🛡️ **Error-Resilient Architecture**
+- Graceful error handling for RPC/network/contract failures.
+- Clear feedback displayed in the UI.
 
 ---
 
-## 🛠 Smart Contract Functions
+## **How It Solves the Problem**
 
-### createWill(address _recipient) public payable
-Creates a new will with the specified recipient and sent ETH amount.
+Smart contracts often expose functions that users want to test or interact with quickly without building a full dApp.  
+This project provides:
 
-### claimWill(address _owner, uint256 _index) public
-Allows the recipient to claim funds from a specific will.
+### ✔ A minimal, production-ready **template** for reading data from a blockchain contract  
+### ✔ A simple UX for developers, testers, and demo environments  
+### ✔ A clean abstraction via a custom React hook (`useWillContract`)  
+### ✔ Automatic loading and error feedback for better developer experience  
 
-### getMyWillsCount() public view returns (uint256)
-Returns the number of wills created by the caller.
+### **Use Cases**
+- Testing smart contract read functions
+- Providing demos or prototype UIs for blockchain teams
+- Serving as a boilerplate for expanding into a larger dApp
+- Teaching how to integrate wagmi/viem with a live contract
 
-### getWill(address _owner, uint256 _index) public view
-Returns recipient address, amount, and claim status.
-
-### getContractBalance() public view returns (uint256)
-Returns total balance held by the smart contract.
-
----
-
-## 🔗 Deployed Smart Contract Link
-You can interact with the deployed contract here:  
-https://coston2-explorer.flare.network/tx/0xd93b1ed019fbaaf3aff23fc26e621e88e5b21058ad23c285e7b7dcef20669f02?tab=index
+### **Benefits**
+- Eliminates repetitive setup for contract interaction
+- Shortens development time for frontend-blockchain integration
+- Encourages modular and scalable architecture
 
 ---
 
-## 📜 Smart Contract Code
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.0;
-
-// contract MultiWill {
-//     struct Will {
-//         address recipient;
-//         uint256 amount;
-//         bool claimed;
-//     }
-
-//     mapping(address => Will[]) public wills; // Each owner can have multiple wills
-
-//     function createWill(address _recipient) public payable {
-//         require(_recipient != address(0), "Invalid recipient address");
-//         require(msg.value > 0, "Amount must be greater than zero");
-
-//         wills[msg.sender].push(Will({
-//             recipient: _recipient,
-//             amount: msg.value,
-//             claimed: false
-//         }));
-//     }
-
-//     function claimWill(address _owner, uint256 _index) public {
-//         require(_index < wills[_owner].length, "Invalid will index");
-
-//         Will storage userWill = wills[_owner][_index];
-//         require(msg.sender == userWill.recipient, "Only recipient can claim");
-//         require(!userWill.claimed, "Already claimed");
-//         require(userWill.amount > 0, "No funds to claim");
-
-//         userWill.claimed = true;
-//         payable(userWill.recipient).transfer(userWill.amount);
-//     }
-
-//     function getMyWillsCount() public view returns (uint256) {
-//         return wills[msg.sender].length;
-//     }
-
-//     function getWill(address _owner, uint256 _index) public view returns (address recipient, uint256 amount, bool claimed) {
-//         require(_index < wills[_owner].length, "Invalid will index");
-//         Will memory userWill = wills[_owner][_index];
-//         return (userWill.recipient, userWill.amount, userWill.claimed);
-//     }
-
-//     function getContractBalance() public view returns (uint256) {
-//         return address(this).balance;
-//     }
-// }
+This project can be easily extended to support additional contract methods, write transactions, events, or more advanced dApp features.
